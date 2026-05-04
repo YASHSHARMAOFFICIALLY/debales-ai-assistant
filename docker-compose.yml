@@ -1,0 +1,24 @@
+services:
+  mongo:
+    image: mongo:7
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+  app:
+    build: .
+    depends_on:
+      - mongo
+    ports:
+      - "3000:3000"
+    environment:
+      MONGODB_URI: mongodb://mongo:27017/debales_ai_assignment
+      APP_URL: http://localhost:3000
+      AUTH_JWT_SECRET: docker-local-development-secret-change-me
+      DEMO_USER_ID: demo-admin
+      GOOGLE_DEFAULT_PROJECT_SLUG: acme-retail
+      AI_PROVIDER: gemini
+
+volumes:
+  mongo-data:
