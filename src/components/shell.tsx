@@ -36,7 +36,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     <main className="min-h-screen bg-[#fbfaf7]" data-testid="app-shell">
       <header className="border-b border-line bg-white/90">
         <div className="mx-auto flex max-w-7xl flex-col gap-3 px-5 py-4 md:flex-row md:items-center md:justify-between">
-          <Link href="/" className="flex items-center gap-3">
+          <Link href="/projects" className="flex items-center gap-3">
             <span className="flex h-10 w-10 items-center justify-center rounded-md bg-ink text-white">
               <Bot size={20} />
             </span>
@@ -88,7 +88,7 @@ export function ProjectNav({ projectSlug, active }: { projectSlug: string; activ
       >
         <Shield size={16} /> Admin
       </Link>
-      <Link href="/" className="flex items-center gap-2 rounded-md border border-line bg-white px-3 py-2 text-sm font-medium">
+      <Link href="/projects" className="flex items-center gap-2 rounded-md border border-line bg-white px-3 py-2 text-sm font-medium">
         <LayoutDashboard size={16} /> Projects
       </Link>
     </nav>

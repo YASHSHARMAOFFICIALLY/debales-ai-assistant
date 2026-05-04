@@ -13,13 +13,13 @@ export default function LoginPage() {
 
   useEffect(() => {
     if (me.data?.user) {
-      router.replace("/");
+      router.replace("/projects");
     }
   }, [me.data?.user, router]);
 
   async function handleDemoLogin(userId: "demo-admin" | "demo-member") {
     await switchUser.mutateAsync(userId);
-    router.push("/");
+    router.push("/projects");
   }
 
   if (me.isLoading) return null;

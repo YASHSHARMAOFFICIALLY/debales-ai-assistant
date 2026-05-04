@@ -30,5 +30,5 @@ export async function GET(request: Request) {
   cookieStore.set(authCookies.session, token, sessionCookieOptions());
   cookieStore.delete(authCookies.oauthState);
 
-  redirect("/");
+  redirect("/projects");
 }

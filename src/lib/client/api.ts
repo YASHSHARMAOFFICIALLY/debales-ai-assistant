@@ -8,11 +8,13 @@ async function requestJson<T>(url: string, init?: RequestInit): Promise<T> {
       ...(init?.headers ?? {}),
     },
   });
-  const data = await response.json();
+  const data = await response.json().catch(() => null);
   if (!response.ok) {
-    throw new Error(data.error ?? "Request failed");
+    const message = data?.error ?? `Request failed (${response.status})`;
+    const detail = data?.issues ? `: ${data.issues.map((i: { message: string }) => i.message).join(", ")}` : "";
+    throw new Error(`${message}${detail}`);
   }
-  return data;
+  return data as T;
 }
 
 export type CurrentUser = {
