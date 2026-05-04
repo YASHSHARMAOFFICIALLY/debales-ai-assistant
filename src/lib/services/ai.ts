@@ -43,7 +43,7 @@ async function callGemini(prompt: string) {
   }
 
   if (!response.ok) {
-    return "The AI provider could not complete the request. The controlled fallback is available while the API is unavailable.";
+    return getAiProviderError("Gemini", response, await readProviderError(response));
   }
 
   const data = await response.json();
@@ -68,11 +68,32 @@ async function callOpenRouter(prompt: string) {
   }
 
   if (!response.ok) {
-    return "The AI provider could not complete the request. The controlled fallback is available while the API is unavailable.";
+    return getAiProviderError("OpenRouter", response, await readProviderError(response));
   }
 
   const data = await response.json();
   return data.choices?.[0]?.message?.content ?? "I could not extract a model response.";
+}
+
+async function readProviderError(response: Response) {
+  try {
+    const data = await response.json();
+    const message = data?.error?.message ?? data?.message;
+    return typeof message === "string" ? message : response.statusText;
+  } catch {
+    return response.statusText;
+  }
+}
+
+function getAiProviderError(provider: string, response: Response, detail: string) {
+  const advice =
+    response.status === 400 || response.status === 403
+      ? "Check the API key and whether the API is enabled for that provider project."
+      : response.status === 404
+        ? "Check the model name configured in GEMINI_MODEL or OPENROUTER_MODEL."
+        : "Retry later or switch to the controlled fallback.";
+
+  return `${provider} request failed with HTTP ${response.status}: ${detail} ${advice}`;
 }
 
 function fallbackReply(input: GenerateAssistantInput) {
